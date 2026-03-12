@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="inner">
+
+                <div class="logo"><a href="index.html"><img src="img/logo.png" alt=""></a></div>
+                <!-- logo -->
+
+                <nav>
+                    
+                    <ul>
+
+                        <li>
+                            <input type="checkbox" id="nav-about">
+                            <label for="nav-about"> 도서관소개 <i class="plus-icon"></i> </label>
+                            <ul class="submenu">
+                                <li><a href="#">도서관소개</a></li>
+                                <li><a href="#">도서관현황</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <input type="checkbox" id="nav-lib">
+                            <label for="nav-lib"> 도서자료실 <i class="plus-icon"></i> </label>
+                            <ul class="submenu">
+                                <li><a href="#">자료실</a></li>
+                                <li><a href="#">열람실예약</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <input type="checkbox" id="nav-member">
+                            <label for="nav-member"> 회원서비스 <i class="plus-icon"></i></label>
+                            <ul class="submenu">
+                                <li><a href="#">회원가입</a></li>
+                                <li><a href="#">마이페이지</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="#">도서검색</a></li>
+                        <li><a href="#">도서관리자</a></li>
+
+
+                    </ul>
+
+                </nav>
+                <!-- nav -->
+
+                <div class="utill">
+                    <button> 로그인 <i class="fa-regular fa-user"></i></button>
+                    <button> 회원가입 <i class="fa-solid fa-user-plus"></i></button>
+                </div>
+                <!-- utill -->
+            </div>
+        </header>
+        <!-- header -->
+
+        <div class="img-slider">
+            <div class="inner">
+                
+                <div class="slide">
+                    <img src="img/imgSlide1.jpg" alt="">
+                    <div class="textbox">
+                        <h4>수많은 이야기가 잠들어 있는 공간<br>문을 여는 순간 새로운 세계가 펼쳐집니다.</h4>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <img src="img/imgSlide2.jpg" alt="">
+                    <div class="textbox">
+                        <h4>조용한 공간, 깊어지는 생각<br>한 페이지씩 세상을 이해해 갑니다.</h4>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <img src="img/imgSlide3.jpg" alt="">
+                    <div class="textbox">
+                        <h4>작은 손에 펼쳐진 커다란 이야기<br>상상은 여기서부터 시작됩니다</h4>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="progress-bar-wrap">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+        <!-- visual -->
+
+        <div class="tab">
+
+            <input type="radio" name="tab" id="tab-1" checked>
+            <input type="radio" name="tab" id="tab-2">
+            <input type="radio" name="tab" id="tab-3">
+
+            <div class="title"><h1>도서관소식</h1></div>
+
+            <div class="tab-btns">
+                <label for="tab-1">일반공지</label>
+                <label for="tab-2">행사안내</label>
+                <label for="tab-3">채용공지</label>
+            </div>
+            
+            
+
+            <div class="notice notice-1">
+                <table>
+                    <tr>
+                        <td>더운 여름 힘내요 – 연구정보실 개실 6주년 기념이벤트 당첨자 발표</td>
+                        <td>2024-08-08</td>
+                    </tr>
+                    <tr>
+                        <td>더운 여름 힘내요 – 연구정보실 개실 6주년 기념이벤트</td>
+                        <td>2024-07-24</td>
+                    </tr>
+                    <tr>
+                        <td>연구자를 위한 텍스트 마이닝(심화) 교육생 모집 안내</td>
+                        <td>2024-07-17</td>
+                    </tr>
+                    <tr>
+                        <td>실감체험관」 전국민 소문내기 이벤트 당첨자 발표</td>
+                        <td>2024-06-10</td>
+                    </tr>
+                    <tr>
+                        <td>디지털인문학과 네트워크 분석 교육생 모집 안내</td>
+                        <td>2024-05-14</td>
+                    </tr>
+                    <tr>
+                        <td>스킬스북도서관 -「청년 디지털 봉사단 ‘잇(IT)다’5기」- 최종 합격자 발표</td>
+                        <td>2024-05-10</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="notice notice-2">
+                <table>
+                    <tr>
+                        <td>2024년 제9회 「월간 인문학을 만나다」 강연 안내</td>
+                        <td>2024-08-08</td>
+                    </tr>
+                    <tr>
+                        <td>「스킬스북도서관이 간식박스 쏩니다!」7월 당첨 발표</td>
+                        <td>2024-08-07</td>
+                    </tr>
+                    <tr>
+                        <td>별 헤는 「실감체험관」이벤트</td>
+                        <td>2024-07-25</td>
+                    </tr>
+                    <tr>
+                        <td>2024년 제8회 「월간 인문학을 만나다」 강연 안내</td>
+                        <td>2024-07-15</td>
+                    </tr>
+                    <tr>
+                        <td>스킬스북도서관이 간식박스 쏩니다!</td>
+                        <td>2024-07-02</td>
+                    </tr>
+                    <tr>
+                        <td>2024년 제7회 「월간 인문학을 만나다」 강연 안내</td>
+                        <td>2024-07-01</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="notice notice-3">
+                <table>
+                    <tr>
+                        <td>2024년 사서직 공무원 경력경쟁채용 필기시험 정답가안 공개 및 이의제기 안내</td>
+                        <td>2024-08-03</td>
+                    </tr>
+                    <tr>
+                        <td>스킬스북도서관 공무직 근로자(미화) 채용 서류전형 합격자 및 면접전형 공고</td>
+                        <td>2024-08-02</td>
+                    </tr>
+                    <tr>
+                        <td>2024년도 사서직 공무원 경력경쟁채용 필기시험 일정 ‧ 장소 및 응시자 준수사항 공고</td>
+                        <td>2024-07-26</td>
+                    </tr>
+                    <tr>
+                        <td>스킬스북도서관 공무직 근로자(미화) 채용공고(재재공고)</td>
+                        <td>2024-07-24</td>
+                    </tr>
+                    <tr>
+                        <td>스킬스북도서관 국가서지과 공무직 근로자 채용 최종 합격자 공고</td>
+                        <td>2024-07-18</td>
+                    </tr>
+                    <tr>
+                        <td>스킬스북도서관 국가서지과 기간제 근로자(휴직대체) 채용 최종합격자 공고</td>
+                        <td>2024-07-16</td>
+                    </tr>
+                    <tr>
+                        <td>스킬스북도서관 국가서지과 공무직 근로자 채용 서류전형(1차) 합격자 발표 및 면접시험(2차) 계획 공고</td>
+                        <td>2024-07-05</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- 도서관소식 -->
+
+        <div class="often-menu">
+            <div class="title"><h1>자주찾는 메뉴</h1></div>
+
+            <div class="menu">
+                <div class="box">
+                    <div class="icon"><i class="fa-solid fa-book-open"></i></div>
+                    <p>도서대출</p>
+                </div>
+
+                <div class="box">
+                    <div class="icon"><i class="fa-solid fa-rotate-left"></i></div>
+                    <p>도서반납</p>
+                </div>
+
+                <div class="box">
+                    <div class="icon"><i class="fa-solid fa-chair"></i></div>
+                    <p>좌석예약</p>
+                </div>
+
+                <div class="box">
+                    <div class="icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <p>희망도서신청</p>
+                </div>
+
+                <div class="box">
+                    <div class="icon"><i class="fa-solid fa-robot"></i></div>
+                    <p>Ai추천도서</p>
+                </div>
+
+                <div class="box">
+                    <div class="icon"><i class="fa-solid fa-laptop"></i></div>
+                    <p>전자도서관</p>
+                </div>
+                
+            </div>
+
+        </div>
+        <!-- 자주찾는메뉴 -->
+         
+        <div class="program">
+
+            <input type="checkbox" id="p-1">
+            <input type="checkbox" id="p-2">
+            <input type="checkbox" id="p-3">
+            <input type="checkbox" id="p-4">
+            <input type="checkbox" id="p-5">
+            <input type="checkbox" id="p-6">
+            <input type="checkbox" id="p-7">
+            <input type="checkbox" id="p-8">
+        
+            <div class="title"><h1>프로그램</h1></div>
+            
+            <div class="program-container">
+
+                <div class="box">
+                    <img src="img/program-1.jpg" alt="">
+                    <div class="text-box">
+                        <p>피아니스트 김미정과 함께하는 힐링 클래식</p>
+                    </div>
+                    <label for="p-1"></label>
+                </div>
+                <div class="box">
+                    <img src="img/program-2.png" alt="">
+                    <div class="text-box">
+                        <p>도란도란] 나를 찾아가는 마음챙김 그림책테라피</p>
+                    </div>
+                    <label for="p-2"></label>
+                </div>
+                <div class="box">
+                    <img src="img/program-3.jpg" alt="">
+                    <div class="text-box">
+                       <p>신흥어울마당작은]2024년 하반기<br> 프로그램 ' 뚝딱 한국사'</p>
+                    </div>
+                    <label for="p-3"></label>
+                </div>
+                <div class="box">
+                    <img src="img/program-4.png" alt="">
+                    <div class="text-box">
+                        <p>[수주](성인)마을미디어 교육생 모집</p>
+                    </div>
+                    <label for="p-4"></label>
+                </div>
+                <div class="box">
+                    <img src="img/program-5.jpg" alt="">
+                    <div class="text-box">
+                        <p>나를 치유하는 명화</p>   
+                    </div>
+                    <label for="p-5"></label>
+                </div>
+                <div class="box">
+                    <img src="img/program-6.jpg" alt="">
+                    <div class="text-box">
+                        <p>[문화가 있는 날] 푸른 하늘이 좋아요!</p>
+                    </div>
+                    <label for="p-6"></label>
+                </div>
+                <div class="box">
+                    <img src="img/program-7.jpg" alt="">
+                    <div class="text-box">
+                        <p>책 속에서 사람을 만나다 </p>
+                    </div>
+                    <label for="p-7"></label>
+                </div>
+                <div class="box">
+                    <img src="img/program-8.jpg" alt="">
+                    <div class="text-box">
+                        <p>서울 문화의 밤(8월) 행사 - 국지승 그림책<br> 작가와 방구석 북토크</p>
+                    </div>
+                    <label for="p-8"></label>
+                </div>
+
+            </div>
+            <!-- 첨에 보이는 8개 -->
+
+            <div class="modal program-modal-1">
+                <div class="modal-box">
+                    <img src="img/program-1.jpg" alt="">
+                    <div class="modal-content">
+                        <h3>피아니스트 김미정과 함께하는 힐링 클래식</h3>
+                        <label class="program-close" for="p-1">닫기</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal program-modal-2">
+                <div class="modal-box">
+                    <img src="img/program-2.png" alt="">
+                    <div class="modal-content">
+                        <h3>도란도란] 나를 찾아가는 마음챙김 그림책테라피</h3>
+                        <label class="program-close" for="p-2">닫기</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal program-modal-3">
+                <div class="modal-box">
+                    <img src="img/program-3.jpg" alt="">
+                    <div class="modal-content">
+                        <h3>신흥어울마당작은]2024년 하반기 프로그램 ' 뚝딱 한국사'</h3>
+                        <label class="program-close" for="p-3">닫기</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal program-modal-4">
+                <div class="modal-box">
+                    <img src="img/program-4.png" alt="">
+                    <div class="modal-content">
+                        <h3>[수주](성인)마을미디어 교육생 모집</h3>
+                        <label class="program-close" for="p-4">닫기</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal program-modal-5">
+                <div class="modal-box">
+                    <img src="img/program-5.jpg" alt="">
+                    <div class="modal-content">
+                        <h3>나를 치유하는 명화</h3>
+                        <label class="program-close" for="p-5">닫기</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal program-modal-6">
+                <div class="modal-box">
+                    <img src="img/program-6.jpg" alt="">
+                    <div class="modal-content">
+                        <h3>[문화가 있는 날] 푸른 하늘이 좋아요!</h3>
+                        <label class="program-close" for="p-6">닫기</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal program-modal-7">
+                <div class="modal-box">
+                    <img src="img/program-7.jpg" alt="">
+                    <div class="modal-content">
+                        <h3>책 속에서 사람을 만나다</h3>
+                        <label class="program-close" for="p-7">닫기</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal program-modal-8">
+                <div class="modal-box">
+                    <img src="img/program-8.jpg" alt="">
+                    <div class="modal-content">
+                        <h3>서울 문화의 밤(8월) 행사 - 국지승 그림책 작가와 방구석 북토크</h3>
+                        <label class="program-close" for="p-8">닫기</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 프로그램 영역 -->
+
+        <div class="calender">
+
+            <input type="radio" name="year" id="y25">
+            <input type="radio" name="year" id="y26" checked>
+            <input type="radio" name="year" id="y27">
+
+            <input type="radio" name="month" id="m1">
+            <input type="radio" name="month" id="m2">
+            <input type="radio" name="month" id="m3">
+            <input type="radio" name="month" id="m4" checked>
+            <input type="radio" name="month" id="m5">
+            <input type="radio" name="month" id="m6">
+            <input type="radio" name="month" id="m7">
+            <input type="radio" name="month" id="m8">
+            <input type="radio" name="month" id="m9">
+            <input type="radio" name="month" id="m10">
+            <input type="radio" name="month" id="m11">
+            <input type="radio" name="month" id="m12">
+
+            <div class="title"><h1>행사달력</h1></div>
+
+            <div class="cal-inputs">
+                <label for="y25" class="y25">2025년</label>
+                <label for="y26" class="y26">2026년</label>
+                <label for="y27" class="y27">2027년</label>
+                <label for="m1" class="m1">1월</label>
+                <label for="m2" class="m2">2월</label>
+                <label for="m3" class="m3">3월</label>
+                <label for="m4" class="m4">4월</label>
+                <label for="m5" class="m5">5월</label>
+                <label for="m6" class="m6">6월</label>
+                <label for="m7" class="m7">7월</label>
+                <label for="m8" class="m8">8월</label>
+                <label for="m9" class="m9">9월</label>
+                <label for="m10" class="m10">10월</label>
+                <label for="m11" class="m11">11월</label>
+                <label for="m12" class="m12">12월</label>
+            </div>
+
+            <div class="april">
+                <div class="cal-header">2026년 <span>4월</span></div>
+
+                <div class="cal-grid">
+                    <div class="cal-empty"></div>
+                    <div class="cal-empty"></div>
+                    <div class="cal-empty"></div>
+
+                    <div class="cal-day">
+                        <div class="num">1</div>
+                        <div class="event">전시[책피는숙련도서관] 4월 북큐레이션</div>
+                    </div>
+
+                    <div class="cal-day"><div class="num">2</div></div>
+
+                    <div class="cal-day">
+                        <div class="num">3</div>
+                        <div class="event">전시[책피는숙련도서관] 4월 북큐레이션</div>
+                    </div>
+
+                    <div class="cal-day sat"><div class="num">4</div></div>
+
+                    <div class="cal-day sun"><div class="num">5</div></div>
+
+                    <div class="cal-day holiday">
+                        <div class="num">6</div>
+                        <div class="event">휴관 정기휴관일</div>
+                    </div>
+
+                    <div class="cal-day"><div class="num">7</div></div>
+                    
+                    <div class="cal-day"><div class="num">8</div></div>
+
+                    <div class="cal-day"><div class="num">9</div></div>
+
+                    <div class="cal-day">
+                        <div class="num">10</div>
+                        <div class="event">숙련기술인과의 만남</div>
+                    </div>
+
+                    <div class="cal-day sat"><div class="num">11</div></div>
+
+                    <div class="cal-day sun"><div class="num">12</div></div>
+
+                    <div class="cal-day holiday">
+                        <div class="num">13</div>
+                        <div class="event">휴관 정기휴관일</div>
+                    </div>
+
+                    <div class="cal-day"><div class="num">14</div></div>
+
+                    <div class="cal-day"><div class="num">15</div></div>
+
+                    <div class="cal-day"><div class="num">16</div></div>
+
+                    <div class="cal-day">
+                        <div class="num">17</div>
+                        <div class="event">행사 책읽는 숙련광장</div>
+                        <div class="event">행사 기능 책마당</div>
+                        <div class="event">행사 책읽는 숙련기술</div>
+                        <div class="event">전시 [책피는 숙련기술도서관] 4월 북큐레이션</div>
+                    </div>
+
+                    <div class="cal-day sat"><div class="num">18</div></div>
+                    <div class="cal-day sun"><div class="num">19</div></div>
+
+                    <div class="cal-day holiday">
+                        <div class="num">20</div>
+                        <div class="event">휴관 정기휴관일</div>
+                    </div>
+
+                    <div class="cal-day">
+                        <div class="num">21</div>
+                        <div class="event">행사 숙련기술 책마당</div>
+                        <div class="event">행사 책읽는 맑은냇가</div>
+                        <div class="event">행사 책읽는 숙련광장</div>
+                        <div class="event">전시 [책피는 숙련기술도서관] 4월 북큐레이션</div>
+                    </div>
+
+                    <div class="cal-day"><div class="num">22</div></div>
+
+                    <div class="cal-day"><div class="num">23</div></div>
+
+                    <div class="cal-day"><div class="num">24</div></div>
+
+                    <div class="cal-day sat"><div class="num">25</div></div>
+
+                    <div class="cal-day sun"><div class="num">26</div></div>
+
+                    <div class="cal-day"><div class="num">27</div></div>
+
+                    <div class="cal-day"><div class="num">28</div></div>
+
+                    <div class="cal-day"><div class="num">29</div></div>
+
+                    <div class="cal-day"><div class="num">30</div></div>
+                </div>
+            </div>
+
+        </div>
+        <!-- 행사달력 영역 -->
+
+        <div class="recommend">
+
+            <div class="title"><h1>추천도서</h1></div>
+
+            <input type="radio" id="s1" name="slide" checked>
+            <input type="radio" id="s2" name="slide">
+            <input type="radio" id="s3" name="slide">
+            <input type="radio" id="s4" name="slide">
+            <input type="radio" id="s5" name="slide">
+            <input type="radio" id="s6" name="slide">
+            <input type="radio" id="s7" name="slide">
+
+            <div class="but-slide">
+                <div class="slide">
+                    <img src="img/추천도서1.jpg" alt="@">
+                    <div class="text-box">
+                        <h5>추천도서 01</h5>
+                        <h3>나에게 나다움을 주기로 했다</h3>
+                        <p>지은이 : 고정욱</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="img/추천도서2.jpg" alt="@">
+                    <div class="text-box">
+                        <h5>추천도서 02</h5>
+                        <h3>여름이 반짝</h3>
+                        <p>지은이 : 김수빈</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="img/추천도서3.jpg" alt="@">
+                    <div class="text-box">
+                        <h5>추천도서 03</h5>
+                        <h3>사랑 한 꼬집을 넣으면</h3>
+                        <p>지은이 : 배리 팀스</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="img/추천도서4.jpg" alt="@">
+                    <div class="text-box">
+                        <h5>추천도서 04</h5>
+                        <h3>정말 정말 소리 지르고 싶어!</h3>
+                        <p>지은이 : 사이먼 필립</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="img/추천도서5.jpg" alt="@">
+                    <div class="text-box">
+                        <h5>추천도서 05</h5>
+                        <h3>힐빌리의 노래 : 위기의 가정과 문화에 대한 회고</h3>
+                        <p>지은이 : J.D 밴스</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="img/추천도서6.jpg" alt="@">
+                    <div class="text-box">
+                        <h5>추천도서 06</h5>
+                        <h3>(허영만의) 커피 한잔 할까요?</h3>
+                        <p>지은이 : 허영만</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="img/추천도서7.jpg" alt="@">
+                    <div class="text-box">
+                        <h5>추천도서 07</h5>
+                        <h3>두더지의 여름: 김상근 그림책</h3>
+                        <p>지은이 : 김상근</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <label for="s1" class="prev prev-1">&#8249;</label>
+                <label for="s2" class="prev prev-2">&#8249;</label>
+                <label for="s3" class="prev prev-3">&#8249;</label>
+                <label for="s4" class="prev prev-4">&#8249;</label>
+                <label for="s5" class="prev prev-5">&#8249;</label>
+                <label for="s6" class="prev prev-6">&#8249;</label>
+                <label for="s7" class="prev prev-7">&#8249;</label>
+
+                <div class="number">
+                    <span class="num num-1">1</span>
+                    <span class="num num-2">2</span>
+                    <span class="num num-3">3</span>
+                    <span class="num num-4">4</span>
+                    <span class="num num-5">5</span>
+                    <span class="num num-6">6</span>
+                    <span class="num num-7">7</span>
+                    <span style="color: #333;"> / 7</span>
+                </div>
+
+                <label for="s1" class="next next-1">&#8250;</label>
+                <label for="s2" class="next next-2">&#8250;</label>
+                <label for="s3" class="next next-3">&#8250;</label>
+                <label for="s4" class="next next-4">&#8250;</label>
+                <label for="s5" class="next next-5">&#8250;</label>
+                <label for="s6" class="next next-6">&#8250;</label>
+                <label for="s7" class="next next-7">&#8250;</label>
+            </div>
+
+        </div>
+        <!-- 추천도서 -->
+        
+    </div>
+</body>
+</html>

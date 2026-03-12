@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>추천도서</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --main: #c8602a; }
+body { background: #000; padding: 60px 40px; font-family: 'Noto Sans KR', sans-serif; color: #fff; }
+
+input[type="radio"] { display: none; }
+
+.section-title {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.section-title::before {
+    content: ''; display: block; width: 4px; height: 22px;
+    background: var(--main); border-radius: 2px;
+}
+
+/* 슬라이더 */
+.slider-outer {
+    position: relative;
+    height: 160px;
+    border: 1px solid #333;
+    border-left: 4px solid var(--main);
+    border-radius: 8px;
+    background: #111;
+}
+
+.slide {
+    position: absolute;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.slide-label { font-size: 11px; color: var(--main); font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; }
+.slide-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.slide-author { font-size: 13px; color: #555; }
+
+#s1:checked ~ .slider-outer .slide:nth-child(1) { opacity: 1; }
+#s2:checked ~ .slider-outer .slide:nth-child(2) { opacity: 1; }
+#s3:checked ~ .slider-outer .slide:nth-child(3) { opacity: 1; }
+#s4:checked ~ .slider-outer .slide:nth-child(4) { opacity: 1; }
+#s5:checked ~ .slider-outer .slide:nth-child(5) { opacity: 1; }
+#s6:checked ~ .slider-outer .slide:nth-child(6) { opacity: 1; }
+#s7:checked ~ .slider-outer .slide:nth-child(7) { opacity: 1; }
+
+/* 컨트롤 */
+.slider-controls {
+    display: flex; align-items: center;
+    justify-content: center; gap: 16px; margin-top: 14px;
+}
+
+.btn-prev, .btn-next {
+    display: none;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #111; border: 1px solid #222;
+    align-items: center; justify-content: center;
+    font-size: 18px; color: #555; cursor: pointer; transition: 0.2s;
+}
+.btn-prev:hover, .btn-next:hover { background: var(--main); color: #fff; border-color: var(--main); }
+
+.slider-info { font-size: 18px; color: #444; width: 50px; text-align: center; }
+.num { display: none; color: var(--main); font-weight: 700; }
+
+#s1:checked ~ .slider-controls .prev-7 { display: flex; }
+#s1:checked ~ .slider-controls .next-2 { display: flex; }
+#s1:checked ~ .slider-controls .num-1  { display: inline; }
+#s2:checked ~ .slider-controls .prev-1 { display: flex; }
+#s2:checked ~ .slider-controls .next-3 { display: flex; }
+#s2:checked ~ .slider-controls .num-2  { display: inline; }
+#s3:checked ~ .slider-controls .prev-2 { display: flex; }
+#s3:checked ~ .slider-controls .next-4 { display: flex; }
+#s3:checked ~ .slider-controls .num-3  { display: inline; }
+#s4:checked ~ .slider-controls .prev-3 { display: flex; }
+#s4:checked ~ .slider-controls .next-5 { display: flex; }
+#s4:checked ~ .slider-controls .num-4  { display: inline; }
+#s5:checked ~ .slider-controls .prev-4 { display: flex; }
+#s5:checked ~ .slider-controls .next-6 { display: flex; }
+#s5:checked ~ .slider-controls .num-5  { display: inline; }
+#s6:checked ~ .slider-controls .prev-5 { display: flex; }
+#s6:checked ~ .slider-controls .next-7 { display: flex; }
+#s6:checked ~ .slider-controls .num-6  { display: inline; }
+#s7:checked ~ .slider-controls .prev-6 { display: flex; }
+#s7:checked ~ .slider-controls .next-1 { display: flex; }
+#s7:checked ~ .slider-controls .num-7  { display: inline; }
+</style>
+</head>
+<body>
+
+<div class="slider-wrap">
+    <div class="section-title"><h2>추천도서</h2></div>
+
+    <input type="radio" id="s1" name="slide" checked>
+    <input type="radio" id="s2" name="slide">
+    <input type="radio" id="s3" name="slide">
+    <input type="radio" id="s4" name="slide">
+    <input type="radio" id="s5" name="slide">
+    <input type="radio" id="s6" name="slide">
+    <input type="radio" id="s7" name="slide">
+
+    <div class="slider-outer">
+        <div class="slide"><div class="slide-label">추천도서 01</div><div class="slide-title">나에게 나다움을 주기로 했다</div><div class="slide-author">지은이 · 고정욱</div></div>
+        <div class="slide"><div class="slide-label">추천도서 02</div><div class="slide-title">여름이 반짝</div><div class="slide-author">지은이 · 김수빈</div></div>
+        <div class="slide"><div class="slide-label">추천도서 03</div><div class="slide-title">사랑 한 꼬집을 넣으면</div><div class="slide-author">지은이 · 배리 팀스</div></div>
+        <div class="slide"><div class="slide-label">추천도서 04</div><div class="slide-title">정말 정말 소리 지르고 싶어!</div><div class="slide-author">지은이 · 사이먼 필립</div></div>
+        <div class="slide"><div class="slide-label">추천도서 05</div><div class="slide-title">힐빌리의 노래</div><div class="slide-author">지은이 · J.D 밴스</div></div>
+        <div class="slide"><div class="slide-label">추천도서 06</div><div class="slide-title">커피 한잔 할까요?</div><div class="slide-author">지은이 · 허영만</div></div>
+        <div class="slide"><div class="slide-label">추천도서 07</div><div class="slide-title">두더지의 여름</div><div class="slide-author">지은이 · 김상근</div></div>
+    </div>
+
+    <div class="slider-controls">
+        <label class="btn-prev prev-1" for="s1">&#8249;</label>
+        <label class="btn-prev prev-2" for="s2">&#8249;</label>
+        <label class="btn-prev prev-3" for="s3">&#8249;</label>
+        <label class="btn-prev prev-4" for="s4">&#8249;</label>
+        <label class="btn-prev prev-5" for="s5">&#8249;</label>
+        <label class="btn-prev prev-6" for="s6">&#8249;</label>
+        <label class="btn-prev prev-7" for="s7">&#8249;</label>
+
+        <div class="slider-info">
+            <span class="num num-1">1</span><span class="num num-2">2</span><span class="num num-3">3</span>
+            <span class="num num-4">4</span><span class="num num-5">5</span><span class="num num-6">6</span>
+            <span class="num num-7">7</span><span style="color:#333"> / 7</span>
+        </div>
+
+        <label class="btn-next next-1" for="s1">&#8250;</label>
+        <label class="btn-next next-2" for="s2">&#8250;</label>
+        <label class="btn-next next-3" for="s3">&#8250;</label>
+        <label class="btn-next next-4" for="s4">&#8250;</label>
+        <label class="btn-next next-5" for="s5">&#8250;</label>
+        <label class="btn-next next-6" for="s6">&#8250;</label>
+        <label class="btn-next next-7" for="s7">&#8250;</label>
+    </div>
+</div>
+
+</body>
+</html>
