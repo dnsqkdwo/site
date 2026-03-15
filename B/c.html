@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>전국 도서관 현황</title>
+
+  <style>
+    /* ── 전역 리셋 ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* ── 헤더 ── */
+    .header {
+      background: #2c3e50;
+      color: #fff;
+      padding: 18px 30px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+
+    /* ── 메인 콘텐츠 래퍼 ── */
+    .main-content {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    /* ── 카드형 섹션 ── */
+    .section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+      margin-bottom: 24px;
+    }
+
+    /* 섹션 제목 — 파란 왼쪽 테두리 (기본) / 빨간 왼쪽 테두리 (.red) */
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: #2c3e50;
+      border-left: 4px solid #3498db;
+      padding-left: 10px;
+    }
+    .section h2.red {
+      border-left-color: #e74c3c;
+      margin-bottom: 16px;
+    }
+
+    /* ── 지도 범례 ── */
+    .legend {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 16px;
+      padding: 10px 16px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      font-size: 13px;
+      align-items: center;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    /* 색상 박스 크기·모양만 지정, 실제 색은 인라인 style로 주입 */
+    .legend-color { width: 14px; height: 14px; border-radius: 3px; }
+
+    /* ── 지도 SVG 컨테이너
+         position:relative → .tooltip 의 absolute 위치 기준점 ── */
+    .map-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .map-wrapper svg { width: 100%; height: auto; }
+
+    /* SVG 내 지역 폴리곤 */
+    .map-wrapper svg .land {
+      fill: #dce3e8;
+      stroke: #fff;
+      stroke-width: .5;
+      cursor: pointer;
+      transition: fill .2s;
+    }
+    .map-wrapper svg .land:hover,
+    .map-wrapper svg .land.active { fill: #a8c8e8; }
+
+    /* 지도 위 막대 그래프 그룹 */
+    .bar-group { cursor: pointer; }
+
+    /* ── 툴팁 ── */
+    .tooltip {
+      position: absolute;
+      background: rgba(44,62,80,.95);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      pointer-events: none;   /* 마우스 이벤트를 툴팁이 가로채지 않도록 */
+      opacity: 0;
+      transition: opacity .15s;
+      z-index: 100;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,.3);
+    }
+    .tooltip.show { opacity: 1; }
+
+    .tooltip .tooltip-title {
+      font-weight: bold;
+      font-size: 13px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid rgba(255,255,255,.3);
+      padding-bottom: 4px;
+    }
+    .tooltip .tooltip-row {
+      gap: 16px;
+      margin-top: 3px;
+    }
+    .tooltip .tooltip-label { opacity: .8; }
+    .tooltip .tooltip-value { font-weight: bold; }
+
+    /* ── 테이블 섹션 상단 컨트롤 ── */
+    .table-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .search-box  { display: flex; align-items: center; gap: 8px; }
+    .sort-controls { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+
+    /* 검색 / 정렬 레이블 공통 */
+    .search-box label,
+    .sort-controls label { font-size: 13px; font-weight: bold; color: #555; }
+
+    .search-box input {
+      padding: 8px 14px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 13px;
+      width: 260px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .search-box input:focus { border-color: #3498db; }
+
+    /* 정렬 버튼 */
+    .btn {
+      padding: 6px 14px;
+      border: 2px solid #ddd;
+      background: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      transition: all .2s;
+    }
+    .btn:hover { border-color: #3498db; color: #3498db; }
+    .btn.on    { background: #3498db; border-color: #3498db; color: #fff; }
+
+    /* ── 테이블 래퍼 (가로·세로 스크롤) ── */
+    .table-wrapper {
+      overflow: auto;          
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      max-height: 500px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      min-width: 1200px;        /* 가로 스크롤 보장 */
+    }
+
+
+    th {
+      background: #2c3e50;
+      color: #fff;
+      padding: 10px 8px;
+      text-align: center;
+      font-weight: bold;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    tbody tr { transition: background .15s; }
+    tbody tr:hover            { background: #eaf2f8; }
+
+    td {
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    mark { background: #f1c40f; color: #333; padding: 0 2px; border-radius: 2px; }
+
+    .no-data    { text-align: center; padding: 40px; color: #999; font-size: 14px; }
+    .data-count { font-size: 12px; color: #888; margin-top: 8px; }
+
+    /* ── 로딩 스피너 ── */
+    .loading {
+      text-align: center;
+      padding: 60px;
+      color: #999;
+      font-size: 16px;
+    }
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 20px; height: 20px;
+      border: 3px solid #ddd;
+      border-top-color: #3498db;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+
+<body>
+
+  <!-- 헤더 -->
+  <div class="header">📚 전국 도서관 현황</div>
+
+  <div class="main-content">
+
+    <!-- ① 지도 섹션 -->
+    <div class="section">
+      <h2>지역별 도서관 현황 지도</h2>
+
+      <!-- 범례 -->
+      <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background:#e74c3c;"></div><span>도서관 수</span></div>
+        <div class="legend-item"><div class="legend-color" style="background:#2ecc71;"></div><span>자료수(도서)</span></div>
+        <div class="legend-item"><div class="legend-color" style="background:#3498db;"></div><span>열람좌석수</span></div>
+      </div>
+
+      <!-- SVG 지도 + 툴팁이 들어갈 컨테이너 -->
+      <div class="map-wrapper" id="mapWrapper">
+        <div class="loading" id="mapLoading">지도 데이터를 불러오는 중</div>
+        <div class="tooltip"  id="tooltip"></div>
+      </div>
+    </div>
+
+    <!-- ② 전체 목록 섹션 -->
+    <div class="section">
+      <h2 class="red">전체 도서관 목록</h2>
+
+      <!-- 검색 + 정렬 컨트롤 -->
+      <div class="table-controls">
+        <div class="search-box">
+          <label>🔍 도서관명 검색:</label>
+          <input type="text" id="searchInput" placeholder="도서관명을 입력하세요..." />
+        </div>
+        <div class="sort-controls">
+          <label>자료수(도서) 정렬:</label>
+          <button class="btn on" data-sort="default">기본(시도명↑)</button>
+          <button class="btn"    data-sort="desc">내림차순 ▼</button>
+          <button class="btn"    data-sort="asc">오름차순 ▲</button>
+        </div>
+      </div>
+
+      <!-- 데이터 테이블 -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>No.</th><th>시도명</th><th>도서관명</th><th>시군구명</th>
+              <th>도서관유형</th><th>휴관일</th><th>평일 시작</th><th>평일 종료</th>
+              <th>열람좌석수</th><th>자료수(도서)</th><th>대출가능권수</th>
+              <th>대출가능일수</th><th>소재지도로주소명</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="13" class="no-data"><div class="loading">데이터를 불러오는 중</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="data-count" id="dataCount"></div>
+    </div>
+
+  </div><!-- /.main-content -->
+
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ── 상수 ─────────────────────────────────────────────────────────
+
+      var SVG_NS = 'http://www.w3.org/2000/svg';
+
+      /**
+       * 시도명(JSON 필드) → ISO 3166-2 코드
+       * SVG 지도 요소 ID와 데이터를 연결하기 위해 사용
+       */
+      var SIDO_TO_ISO = {
+        '서울특별시':'KR-11', '서울':'KR-11',
+        '부산광역시':'KR-26', '부산':'KR-26',
+        '대구광역시':'KR-27', '대구':'KR-27',
+        '인천광역시':'KR-28', '인천':'KR-28',
+        '광주광역시':'KR-29', '광주':'KR-29',
+        '대전광역시':'KR-30', '대전':'KR-30',
+        '울산광역시':'KR-31', '울산':'KR-31',
+        '경기도':'KR-41',     '경기':'KR-41',
+        '강원특별자치도':'KR-42', '강원도':'KR-42', '강원':'KR-42',
+        '충청북도':'KR-43',   '충북':'KR-43',
+        '충청남도':'KR-44',   '충남':'KR-44',
+        '전북특별자치도':'KR-45', '전라북도':'KR-45', '전북':'KR-45',
+        '전라남도':'KR-46',   '전남':'KR-46',
+        '경상북도':'KR-47',   '경북':'KR-47',
+        '경상남도':'KR-48',   '경남':'KR-48',
+        '제주특별자치도':'KR-49', '제주':'KR-49', '제주도':'KR-49',
+        '세종특별자치시':'KR-50', '세종':'KR-50'
+      };
+
+      /** ISO 코드 → 지역 약칭 (지도 막대 레이블용) */
+      var ISO_TO_NAME = {
+        'KR-11':'서울', 'KR-26':'부산', 'KR-27':'대구', 'KR-28':'인천',
+        'KR-29':'광주', 'KR-30':'대전', 'KR-31':'울산',
+        'KR-41':'경기', 'KR-42':'강원', 'KR-43':'충북', 'KR-44':'충남',
+        'KR-45':'전북', 'KR-46':'전남', 'KR-47':'경북', 'KR-48':'경남',
+        'KR-49':'제주', 'KR-50':'세종'
+      };
+
+      /**
+       * 각 지역의 SVG 내 막대 그래프 기준 좌표 [x, y]
+       * viewBox "0 0 420 820" 기준 픽셀 위치
+       */
+      var REGION_POS = {
+        'KR-11':[148,280], 'KR-26':[330,575], 'KR-27':[300,475],
+        'KR-28':[115,295], 'KR-29':[108,555], 'KR-30':[180,410],
+        'KR-31':[355,505], 'KR-41':[165,315], 'KR-42':[280,255],
+        'KR-43':[225,375], 'KR-44':[120,435], 'KR-45':[155,500],
+        'KR-46':[140,600], 'KR-47':[300,385], 'KR-48':[260,545],
+        'KR-49':[90, 775], 'KR-50':[178,400]
+      };
+
+      /** 막대 색상: [도서관수, 자료수, 열람좌석수] */
+      var BAR_COLORS = ['#e74c3c', '#2ecc71', '#3498db'];
+
+      /** 막대 레이아웃 상수 */
+      var BAR_H   = 55;   // 최대 높이 (px)
+      var BAR_W   = 8;    // 막대 너비
+      var BAR_GAP = 2;    // 막대 간격
+      /** 레이블 x 중앙값 — (BAR_W×3 + BAR_GAP×2) / 2 = 13, 미리 계산 */
+      var LABEL_X = String(Math.floor((BAR_W * 3 + BAR_GAP * 2) / 2));
+
+      // ── 상태 변수 ────────────────────────────────────────────────────
+      var allData    = [];         // 원본 전체 데이터 (JSON)
+      var sortMode   = 'default';  // 정렬 모드: 'default' | 'asc' | 'desc'
+      var searchText = '';         // 현재 검색어
+
+      // ── 자주 참조하는 DOM 요소 캐싱 ─────────────────────────────────
+      var elTooltip    = document.getElementById('tooltip');
+      var elMapWrapper = document.getElementById('mapWrapper');
+      var elTableBody  = document.getElementById('tableBody');
+      var elDataCount  = document.getElementById('dataCount');
+
+
+      // ── 유틸 함수 ────────────────────────────────────────────────────
+
+      /** 값을 숫자로 변환. null / NaN → 0 */
+      function toNum(v) {
+        var n = Number(v);
+        return (v == null || isNaN(n)) ? 0 : n;
+      }
+
+      /**
+       * 큰 숫자를 한국식 단위(억/만)로 축약
+       * 예) 150000000 → '1억5000만',  12345 → '1만2345'
+       */
+      function fmtNum(n) {
+        n = toNum(n);
+        if (n >= 1e8) {
+          var eok = Math.floor(n / 1e8);
+          var man = Math.floor((n % 1e8) / 1e4);
+          return man ? eok + '억' + man + '만' : eok + '억';
+        }
+        if (n >= 1e4) {
+          var man2 = Math.floor(n / 1e4);
+          var rem  = n % 1e4;
+          return rem ? man2 + '만' + rem.toLocaleString() : man2 + '만';
+        }
+        return n.toLocaleString();
+      }
+
+
+      // ── 지역별 통계 ──────────────────────────────────────────────────
+
+      /**
+       * allData를 순회해 시도별 집계값 반환
+       * @returns {{ [isoId]: { c: 도서관수, b: 자료수, s: 좌석수, n: 시도명 } }}
+       */
+      function calcStats() {
+        var stats = {};
+        allData.forEach(function (row) {
+          var isoId = SIDO_TO_ISO[(row['시도명'] || '').trim()];
+          if (!isoId) return;
+          if (!stats[isoId]) stats[isoId] = { c: 0, b: 0, s: 0, n: row['시도명'] };
+          stats[isoId].c += 1;
+          stats[isoId].b += toNum(row['자료수(도서)']);
+          stats[isoId].s += toNum(row['열람좌석수']);
+        });
+        return stats;
+      }
+
+
+      // ── 툴팁 ─────────────────────────────────────────────────────────
+
+      /**
+       * 마우스 좌표에 맞게 툴팁 위치 조정
+       * 오른쪽·상단 경계를 벗어나면 반대 방향으로 이동
+       */
+      function moveTooltip(e) {
+        var rect = elMapWrapper.getBoundingClientRect();
+        var x = e.clientX - rect.left + 16;
+        var y = e.clientY - rect.top  - 10;
+        if (x + 200 > elMapWrapper.offsetWidth) x = e.clientX - rect.left - 200;
+        if (y < 0) y = 10;
+        elTooltip.style.left = x + 'px';
+        elTooltip.style.top  = y + 'px';
+      }
+
+      /** 툴팁 내용 생성 후 표시 */
+      function showTooltip(e, name, s) {
+        elTooltip.innerHTML =
+          '<div class="tooltip-title">' + name + '</div>' +
+          '<div class="tooltip-row"><span class="tooltip-label">도서관 수</span>'  +
+            '<span class="tooltip-value" style="color:#e74c3c">' + fmtNum(s.c) + '개</span></div>' +
+          '<div class="tooltip-row"><span class="tooltip-label">자료수(도서)</span>' +
+            '<span class="tooltip-value" style="color:#2ecc71">' + fmtNum(s.b) + '권</span></div>' +
+          '<div class="tooltip-row"><span class="tooltip-label">열람좌석수</span>'  +
+            '<span class="tooltip-value" style="color:#5dade2">' + fmtNum(s.s) + '석</span></div>';
+        elTooltip.classList.add('show');
+        moveTooltip(e);
+      }
+
+
+      // ── 지도 막대 그래프 ─────────────────────────────────────────────
+
+      /**
+       * SVG 위에 지역별 3색 막대 그래프 그리기
+       * 각 지표를 전체 최댓값 대비 비율로 정규화, 최소 3px 보장
+       */
+      function drawBarCharts(svgEl) {
+        var stats  = calcStats();
+        var isoIds = Object.keys(stats);
+        if (!isoIds.length) return;
+
+        // 정규화 기준: 각 지표의 전국 최댓값
+        var maxC = 1, maxB = 1, maxS = 1;
+        isoIds.forEach(function (id) {
+          var s = stats[id];
+          if (s.c > maxC) maxC = s.c;
+          if (s.b > maxB) maxB = s.b;
+          if (s.s > maxS) maxS = s.s;
+        });
+
+        var svgGroup = svgEl.querySelector('g');
+        if (!svgGroup) return;
+
+        isoIds.forEach(function (isoId) {
+          var pos  = REGION_POS[isoId];
+          var stat = stats[isoId];
+          if (!pos) return;
+
+          // 각 막대 높이 계산 (비율 × 최대높이, 최소 3px)
+          var heights = [
+            Math.max(3, Math.round(stat.c / maxC * BAR_H)),
+            Math.max(3, Math.round(stat.b / maxB * BAR_H)),
+            Math.max(3, Math.round(stat.s / maxS * BAR_H))
+          ];
+
+          var group = document.createElementNS(SVG_NS, 'g');
+          group.setAttribute('class', 'bar-group');
+          group.setAttribute('transform', 'translate(' + pos[0] + ',' + pos[1] + ')');
+
+          // 막대 3개 (도서관수 / 자료수 / 좌석수)
+          for (var b = 0; b < 3; b++) {
+            var rect = document.createElementNS(SVG_NS, 'rect');
+            rect.setAttribute('x',      String(b * (BAR_W + BAR_GAP)));
+            rect.setAttribute('y',      String(-heights[b]));   // 위쪽 방향으로 성장
+            rect.setAttribute('width',  String(BAR_W));
+            rect.setAttribute('height', String(heights[b]));
+            rect.setAttribute('fill',   BAR_COLORS[b]);
+            group.appendChild(rect);
+          }
+
+          // 지역명 레이블 (막대 아래)
+          var label = document.createElementNS(SVG_NS, 'text');
+          label.setAttribute('x',           LABEL_X);
+          label.setAttribute('y',           '12');
+          label.setAttribute('text-anchor', 'middle');
+          label.setAttribute('font-size',   '9');
+          label.setAttribute('font-weight', 'bold');
+          label.setAttribute('fill',        '#2c3e50');
+          label.textContent = ISO_TO_NAME[isoId] || isoId;
+          group.appendChild(label);
+
+          // 마우스 이벤트 등록 (IIFE로 클로저 캡처)
+          (function (grp, n, s) {
+            grp.onmouseenter = function (e) { showTooltip(e, n, s); };
+            grp.onmousemove  = moveTooltip;
+            grp.onmouseleave = function () { elTooltip.classList.remove('show'); };
+          })(group, stat.n, stat);
+
+          svgGroup.appendChild(group);
+        });
+      }
+
+
+      // ── 테이블 렌더링 ────────────────────────────────────────────────
+
+      /**
+       * searchText 필터 → sortMode 정렬 → tbody HTML 갱신
+       */
+      function renderTable() {
+        // 1. 검색 필터
+        var rows = searchText
+          ? allData.filter(function (r) {
+              return r['도서관명'] && r['도서관명'].indexOf(searchText) !== -1;
+            })
+          : allData.slice();
+
+        // 2. 정렬
+        if (sortMode === 'default') {
+          rows.sort(function (a, b) {
+            return (a['시도명'] || '').localeCompare(b['시도명'] || '', 'ko');
+          });
+        } else {
+          rows.sort(function (a, b) {
+            var diff = toNum(a['자료수(도서)']) - toNum(b['자료수(도서)']);
+            return sortMode === 'desc' ? -diff : diff;
+          });
+        }
+
+        // 3. 결과 없음
+        if (!rows.length) {
+          elTableBody.innerHTML = '<tr><td colspan="13" class="no-data">검색 결과가 없습니다.</td></tr>';
+          elDataCount.textContent = '';
+          return;
+        }
+
+        // 4. 행 HTML 조립
+        var html = '';
+        for (var i = 0; i < rows.length; i++) {
+          var r = rows[i];
+          html +=
+            '<tr>' +
+              '<td>' + (i + 1) + '</td>' +
+              '<td>' + (r['시도명']            || '') + '</td>' +
+              '<td>' + (r['도서관명']    || '') + '</td>' +
+              '<td>' + (r['시군구명']           || '') + '</td>' +
+              '<td>' + (r['도서관유형']          || '') + '</td>' +
+              '<td>' + (r['휴관일']             || '') + '</td>' +
+              '<td>' + (r['평일운영시작시각']    || '') + '</td>' +
+              '<td>' + (r['평일운영종료시각']    || '') + '</td>' +
+              '<td>' + toNum(r['열람좌석수']).toLocaleString()   + '</td>' +
+              '<td>' + toNum(r['자료수(도서)']).toLocaleString() + '</td>' +
+              '<td>' + (r['대출가능권수']        || '') + '</td>' +
+              '<td>' + (r['대출가능일수']        || '') + '</td>' +
+              '<td>' + (r['소재지도로명주소'] || '') + '</td>' +
+            '</tr>';
+        }
+
+        elTableBody.innerHTML = html;
+      }
+
+
+      // ── 이벤트 바인딩 ────────────────────────────────────────────────
+
+      /* 검색어 입력 */
+      document.getElementById('searchInput').oninput = function (e) {
+        searchText = e.target.value.trim();
+        renderTable();
+      };
+
+      /* 정렬 버튼 — data-sort 속성으로 모드 전환, .on 클래스 토글 */
+      var sortBtns = document.querySelectorAll('.btn[data-sort]');
+      sortBtns.forEach(function (btn) {
+        btn.onclick = function () {
+          sortBtns.forEach(function (b) { b.classList.remove('on'); });
+          btn.classList.add('on');
+          sortMode = btn.dataset.sort;
+          renderTable();
+        };
+      });
+
+
+      // ── 초기화: JSON → SVG → 렌더링 ─────────────────────────────────
+
+      fetch('도서관현황.json')
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          allData = data;
+          return fetch('southKoreaHigh.svg').then(function (r) { return r.text(); });
+        })
+        .then(function (svgText) {
+          // 로딩 메시지 제거
+          document.getElementById('mapLoading').remove();
+
+          // SVG 문자열 파싱 후 DOM 삽입
+          var svgEl = new DOMParser()
+            .parseFromString(svgText, 'image/svg+xml')
+            .querySelector('svg');
+
+          svgEl.setAttribute('viewBox', '0 0 420 820');
+          svgEl.setAttribute('width',   '100%');
+          svgEl.setAttribute('height',  '100%');
+
+          // 툴팁 앞에 삽입 → 툴팁이 SVG 위에 렌더링됨
+          elMapWrapper.insertBefore(svgEl, elTooltip);
+
+          drawBarCharts(svgEl);
+          renderTable();
+        });
+
+    })();
+  </script>
+
+</body>
+</html>
